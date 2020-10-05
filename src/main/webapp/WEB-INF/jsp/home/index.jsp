@@ -34,7 +34,7 @@
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-
+                                <button id="submit" type="submit" class="btn btn-primary">Submit</button>
                             </div>
                             <!-- /.card-body -->
                         </div>
@@ -53,5 +53,26 @@
 </div>
 <!-- ./wrapper -->
 <script type="text/javascript">
+    function showOverLay(message) {
+        var html = ''
+        html += '<div id="processing-overlay" class="overlay"><i class="fas fa-2x fa-sync-alt fa-spin"></i>' + "&nbsp;" + message + '</div>'
+        return html
+    }
+
+    $(document).on("click", "#submit", function () {
+        $(".card").append(showOverLay("Opening calculator"));
+        $.when(showCalculator()).done(function (data) {
+            alert("Result after calculation: "+data.output);
+            $(".card").find("#processing-overlay").remove();
+        })
+    });
+
+    function showCalculator(url) {
+        return $.ajax({
+            type: 'GET',
+            url: "/showCalculator",
+            data: {},
+        });
+    }
 
 </script>
